@@ -4,7 +4,7 @@ My hands hurt when i type. Therefore, the goal of Voice Keyboard is to replace y
 
 Please read the rest of this section before running voice keyboard.
 
-To install, please see the file INSTALL.
+To install, please see the file INSTALL. Note that, due to the large size of the language model files, they are not in the git source tree for this project and not on Github. You'll have to download a release tarball from https://sourceforge.net/projects/voicekey/files/
 
 When you start the program, a bunch of junk scrolls down the screen, pausing intermittently. Eventually this stops. Now you can start talking.
 

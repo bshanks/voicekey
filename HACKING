@@ -1,6 +1,6 @@
 This document contains an introduction to the project for software developers.
 
-The home of this project is https://github.com/bshanks/voicekey
+The home of this project is https://github.com/bshanks/voicekey (however due to the large size of the language model files, they are not in the Git source tree (and they were also too large to attach to a Github 'release'), instead they are in the release tarball at https://sourceforge.net/projects/voicekey/files/ )
 
 COMPONENTS OF THIS PROJECT THAT MIGHT BE USEFUL IN OTHER PROJECTS 
 

@@ -4,7 +4,7 @@ Voice Keyboard is currently only compatible with GNU/Linux.
 
 Voice Keyboard is not yet provided in .deb or .rpm packaged formats. You'll have to know your way around the command line in order to follow the instructions below.
 
-Note that, due to the large size of the language model files, they are not in the git source tree for this project. You'll have to download a release tarball.
+Note that, due to the large size of the language model files, they are not in the git source tree for this project and not on Github. You'll have to download a release tarball from https://sourceforge.net/projects/voicekey/files/
 
 Voice Keyboard requires some other program in order to send keyboard events to your system. There are two choices; "fakekey_uinput", which is included, or "xdotool", which is available separately. fakekey_uinput sends keyboard events via the "uinput" kernel module, and "xdotool" sends them via X Windows. The advantage of fakekey_uinput is that you can use it even outside of X Windows. However, fakekey_uinput makes hald (a daemon which many people use) go crazy, and it doesn't even work with recent kernel versions. Therefore, "xdotool" is the recommended option. 
 
