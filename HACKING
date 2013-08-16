@@ -1,0 +1,195 @@
+This document contains an introduction to the project for software developers.
+
+The home of this project is https://github.com/bshanks/voicekey
+
+COMPONENTS OF THIS PROJECT THAT MIGHT BE USEFUL IN OTHER PROJECTS 
+
+In my opinion, the most important contribution contained in this project is the set of scripts and instructions for making 3-gram language models (see doc/how_to_build_a_lm.txt).
+
+The next most important contributions are the language models themselves; not just voice-keyboard-current.lm (the word mode lm) and keyboard-vocab.lm (the keyboard mode lm), but mainly corpus_from_usage.arpa, which provides statistics on the actual usage of various keyboard keys by a real GNU/Linux user, and combined_corpus_except_ofcourse_keylogger.arpa, which provides statistics on the usage of various words (these models were trained on a corpus containing the results of running a keylogger on myself, and on a corpus containing my outgoing email, other text documents, command line history, respectively).
+
+The project also contains a set of scripts and instructions for creating and using acoustic training data so that end-users can train the system to adapt to their voice.
+
+This project also contains sphinx3_livesegment, a program that listens to the microphone, waits for sound followed by silence, and then runs sphinx3 on the sound. It can be used as a "speech recognition daemon". It listens on stdin for a small set of commands which can be used to dynamically switch the language model or change some configuration parameters. It is a souped-up version of pocketsphinx_continuous (tty-continuous.c), ported from pocketsphinx to sphinx3.
+
+Each of the above-mentioned components can be reused in other open-source voice dictation projects. ARPA-format 3-gram language models are not even specific to the CMU Sphinx speech recognition framework and can probably be used by other speech recognizers. The acoustic training scripts will probably be most useful to other projects working with CMU Sphinx.
+
+The source code for the actual dictation application is the least reusable and therefore least valuable part of the project. It probably also took the least time to write, compared to the other components named above.
+
+
+STATUS OF THIS PROJECT 
+
+The code is awful. It is difficult to read, mostly uncommented, but what is worse is that it is shoddy. Constants are hard coded -- even constants which are shared between multiple files are hard coded separately in each file, usually inconsistently. There is almost no error checking. Some commonly used bits of code are repeated several times rather than being made into a subroutine. Other opportunities for modularity have been bypassed. It's probably full of bugs. There's always an excuse, and mine is that all of the initial code was written using my foot, since my hands were incapacitated. Since this was so slow, i economized on keystrokes at the expense of everything else.
+
+This project is reluctantly and poorly maintained by Bayle Shanks. If an active contributor wants to take it over, great.
+
+The program is also currently lacking many obvious features.
+
+CREDIT
+
+Most of the credit for this program goes to the CMU Sphinx development team, who wrote the speech recognition engine as well as most of the core components in the acoustic model and language model training framework. This project is essentially a small frontend that makes use of their work. You can find the CMU Sphinx team at http://cmusphinx.sourceforge.net/. If you have any questions, or to report any bugs, please email me; my current email can be found on my webpage at http://bayleshanks.com.
+
+
+PROJECT ROADMAP
+
+* rewrite voice-keyboard.py in Haskell (i'm trying to see if i like Haskell better) 
+* make multi-session log file an option which is initially off 
+* forbidden keystroke feature (to forbid cntl-alt-backspace and cntl-alt-delete)
+* rewrite training instructions and scripts to make them more readable 
+* caps lock
+* literal feature (quoting)
+* capitalize "I"
+* mouse click
+* most of the time in language model training is spent in csplit. try replacing csplit with a short perl script. after that, optimize ascii_corpus.pl
+* packaging
+* vowel mouse
+* tone mouse 
+
+AN INTRODUCTION TO SPEECH RECOGNITION
+
+In the following i am referring to CMU Shinx, but i think most of these things apply to other contemporary speech recognition systems also. This section is based on things that i've heard second-hand, and may contain inaccuracies.
+
+The speech recognizer takes a sound recording as input and attempts to tell you which words were spoken in the sound recording. It does this by considering every possible combination of words that you might have spoken and calculating the probability that, if you had spoken those words, the sound produced would've matched that of the sound recording that it was given (of course, it doesn't actually explicitly consider every possible combination of words, because that would take too long). It then combines these probabilities with information about which combinations of words are likely to go together. In the end, the speech recognizer produces a ranked list of things that you might have said, and for each item on the list, the probability that you said it. Voice Keyboard simply asks the recognizer to tell it the first item off that list.
+
+Here's the model that the speech recognizer uses to calculate the probability that saying a given word would produce the observed sound. In linguistics, an atomic sound is called a "phoneme". However, we'll call it a "phone". The program uses a hidden Markov model to represent each possible phone. This means that the act of speaking each phone is modeled by a sequence of states. Associated with each state is statistical information that captures what the microphone should be hearing while the speaker is in that state. Also associated with each state is a table of transition probabilities that yield statistics on how long the speaker is likely to stay in that state (in general, hidden Markov models allow a set of states, each of which may be connected to multiple possible successors, in which case the transition probabilities are used for more than just this; this would be more general than the sequence that i describe here; however i think Sphinx constrains states within a phone to a linear ordering, although a config option allows you to permit states to be skipped). The individual states in the model are called "senones".
+
+Actually, each phone has multiple hidden Markov models associated with it -- for each phone B, for each possible proceeding phone A, and each possible successor phone C, there is a hidden Markov model that captures what B should sound like in this situation. Such a situation is called a "triphone".
+
+By combining the hidden Markov models for each triphone in a word, a hidden Markov model for the entire word can be made. Similarly, these models can be combined to create a hidden Markov model for an entire utterance.
+
+The sum of statistical information concerning what phones/triphones/senones sound like is called an "acoustic model".
+
+The mapping of English language words to pronunciations (by pronunciations i mean sequences of phones) is contained in a "dictionary".
+
+The statistical information about which combinations of words are likely to go together is called a "language model".
+
+The language model contains the probabilities of each possible combination of 3 words. Such a combination is called a "3-gram", and this sort of model is called a 3-gram model. A combination of 2 words would be called a 2-gram. In general, this sort of thing is called an n-gram model. Actually, most possible combinations of 3 words are not explicitly represented in the model, only combinations that were observed at least once in the training set. Also, the type of model we use contains explicit statistics on 1-grams and 2-grams as well as 3-grams.
+
+A "training set" means a collection of empirical data upon which statistical analysis is performed for the purpose of finding the numerical parameters in some model. This analysis is called "training the model", "building the model", "fitting the model", "creating a model", or simply "training".
+
+In order to train an acoustic model, you need a training set consisting of a collection of short audio recordings of speech, with each recording paired with a transcription of the words spoken by the speaker in that recording.
+
+A "corpus" means a collection of written text. A corpus is the type of training set needed to create a language model.
+
+Even if you already have an acoustic model, you might want to do some more training for each individual end-user so that the model can be optimized for the particular characteristics of that user and that microphone. This additional training step is "speaker adaptation".
+
+
+AN INTRODUCTION TO SPHINX3
+
+  Which sphinx?
+   -----------
+As of this writing, CMU has a couple of speech recognizers available to choose from. Pocketsphinx (successor to sphinx2) requires less memory, but is supposedly not as good at large vocabularies -- it's targeted at embedded systems. Sphinx3 used to be the "standard one", but now there's also sphinx4, and i've seen a few web pages in which sphinx developers say that they believe that "sphinx4 is the future of sphinx". However, i used sphinx3 instead of sphinx4 for three reasons: 
+
+* As of this writing, Sphinx4 does not yet support MLLR speaker adaptation, and sphinx3 does
+* Sphinx4 is based on java, which is slightly annoying to install on open-source GNU/Linux packaging systems due to historical licensing issues
+* I got the impression from the forums that sphinx4 is harder to configure than sphinx3, and also that some familiarity with java may be necessary to configure it. I never actually tried out sphinx4 though, so this may be incorrect.
+
+  General observations 
+   ------------------
+Perhaps the most important determinant of accuracy is vocabulary size. To see this in action, try spelling out a lot of text in keyboard mode, and then try spelling out the same text in word mode. There will probably be many more mistakes made in words mode. However, it will not do to make the vocabulary exclude words that the user might actually use. If the user speaks a phrase containing a word which is not in the vocabulary, is likely that the entire phrase will be turned into gobledygook. It would be nice if the program could be made to simply omit the offending word, and still get the rest of the phrase right, but i don't know how to do that.
+
+So, my approach was to start out with a large vocabulary and then think of clearly defined classes of words to remove. For example, i removed almost all proper nouns. In this way, the user has a clearer idea of what they are and are not allowed to say, 
+
+One thing that might surprise you is that the language model is actually very important. Getting training corpora which accurately reflects the type of speaking that your system will be used for, and yet is large enough to have examples of even fairly unlikely phrases, greatly improves accuracy. For example, at the beginning of this project i had no training data for the language model and accuracy was poor, even for keystrokes (this is before i had speaker adaptation, and before i had a decent microphone/sound card). When i generated a language model based on keylogger data, accuracy went up. Later on, with whole words, accuracy went up when i switched from a model trained on the Wall Street Journal corpus to a model trained on my own email. Accuracy went up again when i combined the model trained on my own documents with the model trained on the Wall Street Journal. and accuracy went up again when i corrected a bug which was preventing either of the words "I" or "a" (which are very common, and hence very important) from appearing in the corpus constructed from my documents. (the story i told you in this paragraph is based on my foggy recollections, and may be inaccurate).
+
+
+  Where to get stuff
+   ----------------
+By following the installation instructions for Voice Keyboard, you already have what you need, including much of what is listed below. But for completeness, i will describe for you which resources are available as if you were developing your own dictation software from scratch.
+
+An acoustic model is available at http://www.speech.cs.cmu.edu/sphinx/models/ (i mean the link http://www.speech.cs.cmu.edu/sphinx/models/wsj_jan2008/wsj_all_mllt_4000_20080104.tar.gz within the section "WSJ1 (dictation)"). But that one apparently has problems, as of this writing (see http://sourceforge.net/forum/forum.php?thread_id=2001368&forum_id=5471 ).
+Currently i am using an acoustic model from http://www.inference.phy.cam.ac.uk/kv227/sphinx/acoustic_models.html , specifically http://www.inference.phy.cam.ac.uk/kv227/sphinx/sphinx_wsj_all_cont_3no_4000_32.zip .
+Presumably one could also train an acoustic model from Voxforge -- i am not aware of any pre-trained Sphinx-format acoustic model based on Voxforge, but i haven't looked.
+Here is a nice paper that compares different acoustic model parameter values: http://www.inference.phy.cam.ac.uk/kv227/papers/baseline_wsj_recipes.pdf
+
+A dictionary is available at http://www.speech.cs.cmu.edu/cgi-bin/cmudict .
+
+A language model is available from http://www.inference.phy.cam.ac.uk/kv227/lm_giga/ -- specifically, i used http://www.inference.phy.cam.ac.uk/kv227/lm_giga/lm_giga_20k_vp_3gram.zip . Another language model that you can use is the one produced by this project   -- voice-keyboard-current.lm
+
+Language models are usually in the standard textual "ARPA" format. However, i don't know where to get a specification of this format, or even if one exists. I have experienced interoperability issues between different tools that supposedly all deal with ARPA-format models.
+
+It takes a long time to load in a large ARPA-format model, so you probably want to convert it to the binary .DMP format. lm3g2dmp is the conversion tool; you can get it at http://cmusphinx.sourceforge.net/html/download.php#lm3g2dmp .
+
+Here is a web-based language model trainer: http://www.speech.cs.cmu.edu/tools/lmtool.html . It's nice because it's turnkey (unlike cmuclmtk, where you have to look at the docs, and then run a bunch of commands in sequence), and also because it creates dictionary entries for words that are not in the dictionary via a pronunciation algorithm. However, it refuses to work with vocabularies containing more than 5000 words.
+
+For more information on how to use sphinx/how sphinx works, see http://cmusphinx.sourceforge.net/sphinx3/doc/s3_description.html . For even more detailed information, see http://www-2.cs.cmu.edu/~archan/documentation/sphinxDoc.pdf . For the sphinx user group, see http://sourceforge.net/forum/forum.php?forum_id=5471 . There seem to be two project wikis, http://www.speech.cs.cmu.edu/cmusphinx/moinmoin/ and http://sphinx.subwiki.com/sphinx/index.php/Main_Page .
+
+For (a little) information on some of the top-level sphinx procedures, see http://www.speech.cs.cmu.edu/sphinx/sphinx3/doxygen/html/s3__decode_8h.html and http://lima.lti.cs.cmu.edu/moinmoin/FrontPage?action=AttachFile&do=get&target=20071114.pdf ; but i find it easier just to look through sphinx3_livesegment.c and learn by example.
+
+Some of the recent sphinx developers' project-related web pages are at http://lima.lti.cs.cmu.edu/moinmoin/ and http://www.cs.cmu.edu/~archan/ . These are not the only important sphinx developers, just the only ones whose sphinx-related web pages are known to me -- if anyone else would like to be listed here, just let me know. 
+
+  Arguments of a sphinx3 executable
+   -------------------------------
+Sphinx3 programs tend to helpfully print out a list of all potential arguments, along with their default values and current values, upon startup. http://www-2.cs.cmu.edu/~archan/documentation/sphinxDoc.pdf contains documentation on the command line arguments.
+
+Here's a command line similar to the one with which voice-keyboard.py invokes sphinx:
+
+sphinx3_livesegment \
+  -alpha .82 \
+  -hmm /home/bshanks/prog/speech/wsj_all_cont_3no_4000_32 \
+  -fdict  /home/bshanks/prog/speech/lm_giga_5k_nvp_3gram/lm_giga_5k_nvp.sphinx.filler \
+  -feat       s3_1x39 \
+  -lmctlfn lmctl \
+  -dict voice-keyboard-current.dic \
+  -hyp /tmp/voice-keyboard-current.hyp  \
+  -mllr /home/bshanks/prog/speech/mllr_matrix-current \
+  -mixw /home/bshanks/prog/speech/wsj_all_cont_3no_4000_32/mixture_weights -mean /home/bshanks/prog/speech/wsj_all_cont_3no_4000_32/means -var /home/bshanks/prog/speech/wsj_all_cont_3no_4000_32/variances \
+  -adcdev /dev/dsp1 \
+  -beam 1e-80 -wbeam 1e-60 -pbeam 1e-70 -wend_beam 1e-85 -maxhistpf 125 -maxhmmpf 2500 -maxcdsenpf 1500 \
+  -subvq /home/bshanks/prog/speech/wsj_all_cont_3no_4000_32/subvq -subvqbeam 1e-2
+
+Here's what those things mean:
+
+  -alpha .82 \
+"pre-emphasis filter coefficient"; see http://www-2.cs.cmu.edu/~archan/documentation/sphinxDoc.pdf. The default value is .97.
+
+  -hmm /home/bshanks/prog/speech/wsj_all_cont_3no_4000_32 \
+the acoustic model 
+
+  -fdict  /home/bshanks/prog/speech/lm_giga_5k_nvp_3gram/lm_giga_5k_nvp.sphinx.filler \
+the "filler dictionary". in this case, it only contains 3 entries:
+
+<s>     sil
+</s>    sil
+<sil>   sil
+
+  -feat       s3_1x39 \
+the type of features used by your acoustic model 
+
+  -lmctlfn lmctl \
+the name of a file containing a list of language models and aliases/names for them. in this case, "lmctl" contains:
+
+voice-keyboard-current.lm.DMP regular
+keyboard-vocab.lm keyboard
+view-vocab.lm view
+
+If you only have one language model, you could use the -lm option instead.
+
+  -dict voice-keyboard-current.dic \
+the dictionary 
+
+  -hyp /tmp/voice-keyboard-current.hyp  \
+this tells sphinx3 to append the results of speech recognition to this file after each utterance
+
+  -mllr /home/bshanks/prog/speech/mllr_matrix-current \
+an "mllr_matrix" is the result of acoustic model adaptation (that is, starting with an existing acoustic model and training it to your voice)
+
+  -mixw /home/bshanks/prog/speech/wsj_all_cont_3no_4000_32/mixture_weights -mean /home/bshanks/prog/speech/wsj_all_cont_3no_4000_32/means -var /home/bshanks/prog/speech/wsj_all_cont_3no_4000_32/variances \
+whenever you use the -mllr option, you have to also include these three options. the arguments are simply the paths to various components of the acoustic model.
+
+  -adcdev /dev/dsp1
+the audio input device location 
+
+  -beam 1e-80 -wbeam 1e-60 -pbeam 1e-70 -wend_beam 1e-85 -maxhistpf 125 -maxhmmpf 2500 -maxcdsenpf 1500 \
+these are parameters controlling various tradeoffs between speed and accuracy. The "beam" parameters are most accurate near 0 and fastest near 1. The "max" parameters are more accurate as they get larger and faster as they get smaller. http://www.speech.cs.cmu.edu/sphinx/models/ has some suggestions for some of these values (look at the section "WSJ1 (dictation)"). http://cmusphinx.sourceforge.net/sphinx3/doc/s3_description.html#sec_dec_tune suggests a procedure for tuning them. http://www.speech.cs.cmu.edu/cmusphinx/moinmoin/DecoderTuning suggests a different procedure. 
+
+Incidentally, i noticed that setting -beam to 1e-80, rather than the default of 1e-55, had a substantial positive effect on accuracy.
+
+  -subvq /home/bshanks/prog/speech/wsj_all_cont_3no_4000_32/subvq -subvqbeam 1e-2
+these deal with sub-vector quantization, which is a speed optimization. see http://cmusphinx.sourceforge.net/sphinx3/doc/s3_description.html#am_subvq . http://www.speech.cs.cmu.edu/sphinx/models/ suggests the value of 1e-2 for -subvqbeam.
+
+In addition, another important parameter you may want to fiddle with is option -lw (see the very end of http://www.speech.cs.cmu.edu/sphinx/tutorial.html for a definition of "language weight").
+
+  Related projects 
+   --------------
+Besides CMU Sphinx, another open-source speech recognition system is Julius. It seems likely that Voice Keyboard could be made to work with Julius -- maybe someday i'll try to do that.

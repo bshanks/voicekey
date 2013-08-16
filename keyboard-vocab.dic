@@ -1,0 +1,169 @@
+alfa                          AE L F AH
+bravo                         b r aa v ow
+charlie                       ch aa r l iy
+delta                         d eh l t ah
+echo                          eh k ow
+foxtrot                       F AA K S T R AA T
+ginger                        jh ih n jh er
+henry                         hh eh n r iy
+india                         ih n d iy ah
+juliet                        JH UW L IY EH T
+kilo                          k ih l ow
+lima                          l ay m ah
+lima(2)                       l iy m ah
+michael                       m ay k ah l
+november                      n ow v eh m b er
+oscar                         ao s k er
+peter                         p iy t er
+quebec                        k w ah b eh k
+robbie                        r aa b iy
+sierra                        s iy eh r ah
+tango                         t ae ng g ow
+uniform                       y uw n ah f ao r m
+victor                        v ih k t er
+whiskey                       w ih s k iy
+whiskey(2)                    hh w ih s k iy
+x-ray                         EH K S R EY
+yankee                        y ae ng k iy
+zulu                          z uw l uw
+apostrophe                    AH P AA S T R AH F IY
+eight                         ey t
+enter_key                     EH N ER K IY
+enter_key(2)                  EH N T ER K IY
+five                          f ay v
+four                          f ao r
+nine                          n ay n
+one                           w ah n
+one(2)                        hh w ah n
+seven                         s eh v ah n
+six                           s ih k s
+three                         th r iy
+two                           t uw
+zero                          z ih r ow
+zero(2)                       z iy r ow
+escape_key                    IH S K EY P K IY
+tabular                       T AE B Y AH L ER
+tabular(2)                    T AE B Y UW L AA R
+tabular(3)                    T AE B Y UW L ER 
+bray                          B R EY
+backtick                      B AE K T IH K
+quotation                     K W OW T EY SH AH N
+slash                         s l ae sh
+comma                         K AA M AH
+colon                         k ow l ah n
+semicolon                     S EH M IY K OW L AH N
+semicolon(2)                  S EH M AY K OW L AH N
+semicolon(3)                  S EH M IY K OW L IH N
+semicolon(4)                  S EH M AY K OW L IH N
+number_sign                   N AH M B ER S AY N
+period                        p ih r iy ah d
+backslash                     B AE K S L AE SH
+at_sign                       AE T S AY N
+star                          s t aa r
+left_parens                   L EH F T P EH R AH N Z
+left_parens(2)                L EH F T P EH R EH N Z
+right_parens                  R AY T P EH R AH N Z
+right_parens(2)               R AY T P EH R EH N Z
+left_brace                    L EH F T B R EY S
+right_brace                   R AY T B R EY S
+dash                          d ae sh
+equals                        iy k w ah l z
+plus                          p l ah s
+ampersand                     AE M P ER S AE N D
+circumflex                    S ER K AH M F L EH K S
+circumflex(2)                 S ER K AH M F L EH K S 
+dollar_sign                   D AO L ER S AY N
+percent                       p er s eh n t
+exclamation                   EH K S K L AH M EY SH AH N
+question_mark                 K W EH S CH AH N M AA R K
+question_mark(2)              K W EH SH AH N M AA R K
+twiddle                       T W IH D AH L
+underscore                    ah n d er s k ao r
+vertical_bar                  V ER T IH K AH L B AA R
+left_bracket                  L EH F T B R AE K IH T
+right_bracket                 R AY T B R AE K IH T
+up_arrow                      AH P AE R OW
+down_arrow                    D AW N AE R OW
+left_arrow                    L EH F T AE R OW
+right_arrow                   R AY T AE R OW
+north_arrow                   N AO R TH AE R OW
+south_arrow                   S AW TH AE R OW
+west_arrow                    W EH S T AE R OW
+east_arrow                    IY S T AE R OW
+page_down                     P EY JH D AW N
+page_up                       P EY JH AH P
+home_key                      HH OW M K IY
+end_key                       EH N D K IY
+greater_than_sign             G R EY T ER DH AE N S AY N
+less_than_sign                L EH S DH AE N S AY N
+insert                        ih n s er t
+insert(2)                     ih n s er t
+delete                        D IH L IY T
+erase                         ih r ey s
+erase(2)                      iy r ey s
+function_key_1                F AH NG K SH AH N K IY W AH N
+function_key_2                F AH NG K SH AH N K IY T UW
+function_key_3                F AH NG K SH AH N K IY TH R IY
+function_key_4                F AH NG K SH AH N K IY F OW R
+function_key_5                F AH NG K SH AH N K IY F AY V
+function_key_6                F AH NG K SH AH N K IY S IH K S
+function_key_7                F AH NG K SH AH N K IY S EH V AH N
+function_key_7(2)             F AH NG K SH AH N K IY  S EH V EH N
+function_key_8                F AH NG K SH AH N K IY EY T
+function_key_9                F AH NG K SH AH N K IY N AY N
+function_key_ten              F AH NG K SH AH N K IY T EH N
+function_key_eleven           F AH NG K SH AH N K IY IH L EH V AH N
+function_key_twelve           F AH NG K SH AH N K IY T W EH L V
+function_key_thirteen         F AH NG K SH AH N K IY TH ER T IY N
+function_key_fourteen         F AH NG K SH AH N K IY F AO R T IY N
+function_key_fifteen          F AH NG K SH AH N K IY F IH F T IY N
+function_key_sixteen          F AH NG K SH AH N K IY S IH K S T IY N
+function_key_seventeen        F AH NG K SH AH N K IY S EH V AH N T IY N
+function_key_eighteen         F AH NG K SH AH N K IY EY T IY N
+function_key_nineteen         F AH NG K SH AH N K IY N AY N T IY N
+function_key_twenty           F AH NG K SH AH N K IY T W EH N IY
+function_key_twenty_one       F AH NG K SH AH N K IY T W EH N IY W AH N
+function_key_twenty_two       F AH NG K SH AH N K IY T W EH N IY T UW
+function_key_twenty_three     F AH NG K SH AH N K IY T W EH N IY TH R IY
+function_key_twenty_four      F AH NG K SH AH N K IY T W EH N IY F AO R
+mouse                         m aw s
+voice                         v oy s
+caps_lock                     K AE P S L AA K
+repeat_command                R IH P IY T K AH M AE N D
+previous_command              P R IY V IY AH S K AH M AE N D
+next_command                  N EH K S K AH M AE N D
+back_command                  B AE K K AH M AE N D
+forward_command               F AO R W ER D K AH M AE N D
+new_command                   N Y UW K AH M AE N D
+close_command                 K L OW Z K AH M AE N D
+lower_window                  L OW ER W IH N D OW
+cycle_windows                 S AY K AH L W IH N D OW Z
+work_space_1                  W ER K S P EY S W AH N
+work_space_2                  W ER K S P EY S T UW
+work_space_3                  W ER K S P EY S TH R IY
+work_space_4                  W ER K S P EY S F OW R
+work_space_5                  W ER K S P EY S F AY V
+work_space_6                  W ER K S P EY S S IH K S
+work_space_7                  W ER K S P EY S S EH V AH N
+work_space_7(2)               W ER K S P EY S   S EH V EH N 
+work_space_8                  W ER K S P EY S EY T
+work_space_9                  W ER K S P EY S N AY N
+cut_command                   K AH T K AH M AE N D
+copy_command                  K AA P IY K AH M AE N D
+paste_command                 P EY S T K AH M AE N D
+undo_command                  AH N D UW K AH M AE N D
+redo_command                  R IY D UW K AH M AE N D
+open_command                  OW P AH N K AH M AE N D
+find_command                  F AY N D K AH M AE N D
+save_command                  S EY V K AH M AE N D
+control                       k ah n t r ow l
+alternate                     ao l t er n ah t
+alternate(2)                  ao l t er n ey t
+super                         s uw p er
+hyper                         HH AY P ER
+shift                         sh ih f t
+keyboard                      k iy b ao r d
+regular                       r eh g y ah l er
+regular(2)                    r ey g y ah l er
+view                          v y uw
+launch_terminal               L AO N CH T ER M AH N AH L

@@ -1,0 +1,3 @@
+All files in this project except for combined_corpus_except_ofcourse_keylogger.arpa and word-vocab.arpa are available under either the GPL version 3 or later, AGPL version 3 or later, your choice. Furthermore, four years after any update is committed, it becomes available under the BSD license also.
+
+See LANGUAGE_MODEL_COPYING for the license for combined_corpus_except_ofcourse_keylogger.arpa and word-vocab.arpa. Due to their size, these files are in the binary distribution but not in the git source tree.

@@ -1,0 +1,307 @@
+INTRODUCTION 
+
+My hands hurt when i type. Therefore, the goal of Voice Keyboard is to replace your keyboard with a microphone. It's not as fast as typing (yet) -- but if you have problems using a keyboard then this is an alternative. I have been using Voice Keyboard to do most of my typing for the past month.
+
+Please read the rest of this section before running voice keyboard.
+
+To install, please see the file INSTALL.
+
+When you start the program, a bunch of junk scrolls down the screen, pausing intermittently. Eventually this stops. Now you can start talking.
+
+As you talk, debug information appears on the terminal where you started the program. If you want to know what Voice Keyboard thinks you just said, you can look at this debug information.
+
+Each key found on a standard keyboard has been given a codeword (see table below). To type a key, say its codeword. For example, in order to type "Hello World" you could say "SHIFT HENRY ECHO LIMA LIMA OSCAR BRAY SHIFT WHISKEY OSCAR ROBBIE LIMA DELTA".
+
+You can also say English words to type a whole word at once. The program knows about 17,000 words. The program automatically types a space after each word. Everything is typed in lower case. For example, in order to type "hello world" you could say "HELLO WORLD".
+
+The program knows individual digits but you have to spell out numbers. For example, to type "42" you would say "FOUR TWO".
+
+The codeword "VOICE" is special. When you say VOICE, the program enters "stopped mode". While you are in the stopped mode, the program will ignore anything you say except for a few special commands. I often use the stopped mode as a way of pausing Voice Keyboard so that i can cough or talk to someone else in the room with me -- so, you can think of stopped mode as a way of turning off the microphone. The presence of VOICE anywhere in a phrase will cause Voice Keyboard to ignore the rest of the phrase.
+
+Sometimes Voice Keyboard will seem to mysteriously stop working. When this happens, it's usually because Voice Keyboard has misheard you (thinking that you have said "VOICE" when you didn't) and gone into stopped mode. You can tell whether you are in stopped mode by looking at the color of the icon that Voice Keyboard places in the notification area of your task bar -- the icon is red when you are in stopped mode, and green otherwise.
+
+To get out of stopped mode, say "VOICE CONTROL" and then wait a second or two for it to be processed. The icon should turn back to green. If it does not, the computer has misheard you -- try again.
+
+There is not yet a Quit command in Voice Keyboard -- you have to type cntl-C in the terminal window.
+
+At this point, after consulting the table of keypress codewords below, you will know enough to begin using Voice Keyboard. You can come back and read the "MORE INSTRUCTIONS" section of this file later.
+
+TABLE OF KEYPRESS CODEWORDS
+
+  Spacebar
+   ------
+    BRAY
+
+  Alphabet and numbers
+   ------------------
+    A	ALFA
+    B	BRAVO
+    C	CHARLIE
+    D	DELTA
+    E	ECHO
+    F	FOXTROT
+    G	GINGER
+    H	HENRY
+    I	INDIA
+    J	JULIET
+    K	KILO
+    L	LIMA
+    M	MICHAEL
+    N	NOVEMBER
+    O	OSCAR
+    P	PETER
+    Q	QUEBEC
+    R	ROBBIE
+    S	SIERRA
+    T	TANGO
+    U	UNIFORM
+    V	VICTOR
+    W	WHISKEY
+    X	X-RAY
+    Y	YANKEE
+    Z	ZULU
+
+    0	ZERO
+    1	ONE
+    2	TWO
+    3	THREE
+    4	FOUR
+    5	FIVE
+    6	SIX
+    7	SEVEN
+    8	EIGHT
+    9	NINE
+
+  Modifier keys
+   -----------
+    CONTROL
+    ALTERNATE
+    SUPER
+    HYPER
+    SHIFT
+
+  Misc
+   --
+    Enter	ENTER_KEY
+    Backspace	ERASE
+    Tab		TABULAR
+    Escape	ESCAPE_KEY
+
+  Punctuation characters
+   --------------------
+    `	BACKTICK
+    ~	TWIDDLE
+    !	EXCLAMATION
+    @	AT_SIGN
+    #	NUMBER_SIGN
+    $	DOLLAR_SIGN
+    %	PERCENT
+    ^	CIRCUMFLEX
+    &	AMPERSAND
+    *	STAR
+    (	LEFT_PARENS
+    )	RIGHT_PARENS
+    -	DASH
+    _	UNDERSCORE
+    =	EQUALS
+    +	PLUS
+    [	LEFT_BRACKET
+    {	LEFT_BRACE
+    ]	RIGHT_BRACKET
+    }	RIGHT_BRACE
+    \	BACKSLASH
+    |	VERTICAL_BAR
+    ;	SEMICOLON
+    :	COLON
+    '	APOSTROPHE
+    "	QUOTATION
+    ,	COMMA
+    <	LESS_THAN_SIGN
+    .	PERIOD
+    >	GREATER_THAN_SIGN
+    /	SLASH
+    ?	QUESTION_MARK
+
+  Movement keys and ins/del
+   -----------------------
+    UP_ARROW or NORTH_ARROW
+    DOWN_ARROW or SOUTH_ARROW
+    LEFT_ARROW or WEST_ARROW
+    RIGHT_ARROW or EAST_ARROW
+
+    PAGE_DOWN
+    PAGE_UP
+
+    HOME_KEY
+    END_KEY
+    INSERT
+    DELETE
+
+  Function keys
+   -----------
+    FUNCTION_KEY_1
+    FUNCTION_KEY_2
+    ...
+    FUNCTION_KEY_24
+
+  Nonstandard keys
+   --------------
+    CUT_COMMAND (key constant 137)
+    COPY_COMMAND (133)
+    PASTE_COMMAND (135)
+    UNDO_COMMAND (131)
+    REDO_COMMAND (182)
+    OPEN_COMMAND (134)
+    FIND_COMMAND (136)
+    SAVE_COMMAND (234)
+    PREVIOUS_COMMAND (191)
+    NEXT_COMMAND (192)
+    BACK_COMMAND (158)
+    FORWARD_COMMAND (159)
+    NEW_COMMAND (190;)
+    CLOSE_COMMAND (193)
+
+  Non(single)keypress codewords
+   --------------------
+ LOWER_WINDOW : fakekey_uinput -k 125 -k 108;
+ CYCLE_WINDOWS : fakekey_uinput -k 56 -c $\'\t\'
+ WORK_SPACE_1 : wmctrl -s  0
+ WORK_SPACE_2 : wmctrl -s  1
+ WORK_SPACE_3 : wmctrl -s  2
+ WORK_SPACE_4 : wmctrl -s  3
+ WORK_SPACE_5 : wmctrl -s  4
+ WORK_SPACE_6 : wmctrl -s  5
+ WORK_SPACE_7 : wmctrl -s  6
+ WORK_SPACE_8 : wmctrl -s  7
+ WORK_SPACE_9 : wmctrl -s  8
+ MISTAKE : (does nothing for now)
+
+  Mode changes (see below)
+   --------------------
+  VOICE: pause
+  VOICE CONTROL: resume
+  VOICE KEYBOARD: single key mode
+  VOICE REGULAR: word
+     VOICE SPACES: in regular mode, put spaces in between words (the default)
+     VOICE SQUASH: in regular mode, don't put spaces in between words
+     VOICE UNDERSCORES: in regular mode, put underscores in between words
+  VOICE VIEW: view mode
+
+  Misc command words
+   --------------------
+  REPEAT COMMAND n: repeat previous command n times, where n is a number between 0 and 9
+
+  Codewords only available in regular mode 
+   --------------------
+ CHANGE_DIRECTORY : type 'cd '
+
+ LESS : type 'less '
+ LIST : type 'list '
+ EDITOR : type 'editor '
+ 
+ U_S_R : type 'usr'
+ BIN : type 'bin'
+ ET_CETERA : type 'etc'
+ X_ELEVEN : type 'X11'
+ TAR : type 'tar'
+
+ LAUNCH_TERMINAL : (does nothing for now)
+
+
+MORE INSTRUCTIONS
+
+  Vocabulary 
+   --------
+The program does not know most proper nouns. When you say a word that the program does not know, it screws up the recognition not only of that word, but of everything else also. So, try to be aware of this, and to spell out proper nouns (and other words you notice the program doesn't recognize) rather than saying them. 
+
+  Keyboard mode 
+   -----------
+After you learn to use the commands VOICE and VOICE CONTROL to temporarily pause and unpause the program, the next most useful commands are those that switch between "word mode" and "keyboard mode". "word mode" is the default. "Keyboard mode" is a special mode where only the codewords corresponding to keyboard keys are allowed. The advantage of "keyboard mode" is that the speech recognition engine performs with significantly greater speed and accuracy.
+
+To switch into "word mode", use the command "VOICE REGULAR". To switch into "keyboard mode", use the command "VOICE KEYBOARD". In word mode, the notification icon is a square; in keyboard mode, the notification icon is made of two rectangles, a black one and a colored one, stacked on top of one another. Switching between modes is quick. I find that i switch between modes quite often; i will switch into keyboard mode whenever i plan to type more than a few keystrokes, and i will switch into word mode to type even a single word (unless the word is short).
+
+In addition to being more accurate and faster, keyboard mode is convenient for programs like "mutt" which are driven by single keystrokes -- in such a situation you wouldn't want Voice Keyboard accidentally typing in a multiletter word.
+
+  Repeat
+   ----
+After using Voice Keyboard to enter any keypress, you can repeat that keypress by saying REPEAT COMMAND N, where N is a number between 0 and 9. This is convenient when using modifier keys because modifiers which were active for the original keypress will be active for the repeated keypress also. For example, "ALTERNATE ERASE REPEAT COMMAND FIVE" is equivalent to "ALTERNATE ERASE ALTERNATE ERASE ALTERNATE ERASE ALTERNATE ERASE ALTERNATE ERASE".
+
+  Privacy (or lack thereof)
+   -----
+Voice Keyboard keeps a complete transcript of everything that you say. /tmp/voice-keyboard-current.hyp contains a transcript of this current session. Unfortunately you cannot delete this file while Voice Keyboard is running (if you accidentally delete it, just restart Voice Keyboard). voice-keyboard-log.hyp (in the working directory from which you ran Voice Keyboard) is a combined transcript from ALL sessions up to now. You may wish to delete these periodically.
+
+Because other people nearby can hear what you say, you may wish to avoid using Voice Keyboard to type in your password.
+
+Remember that anyone whose voice can be heard by your microphone can control your computer while Voice Keyboard is running. You may not want to leave your microphone next to an open window while Voice Keyboard is running and you are away :)
+
+  Spaces
+   ----
+Instead of automatically typing a space after each word, you can make Voice Keyboard use underscores instead with the command VOICE UNDERSCORES. To disable this behavior completely (i.e. to squash consecutive words together without anything in between them) use VOICE SQUASH. To go back to the default behavior of putting a space after each word, use VOICE SPACES.
+
+  Training
+   ------
+For instructions on how to train to your voice, see the file doc/how_to_train.txt . I haven't done rigorous testing, but my feeling is that doing a lot of training substantially improves accuracy.
+
+  View mode
+   -------
+View mode is similar to keyboard vote except that only "movement" keys are enabled. This can be useful when you are reading a document and paging/scrolling up and down. The command to enter view mode is VOICE VIEW. The icon is like keyboard mode, except that the green is on top and the black is on the bottom.
+
+  Status of this program
+   --------------------
+This program is currently lacking many obvious features and is currently written in a slipshod fashion and hence probably contains many bugs. I do not anticipate having much time to improve this program in the next few months. However, since i personally use this program everyday to do almost all my typing, i expect that i will slowly improve it over time.
+
+  Credit
+   ----
+Most of the credit for this program goes to the CMU Sphinx development team, who wrote the speech recognition engine used by Voice Keyboard. I just wrote a few helper scripts relating to language model compilation and wrote this bare bones frontend. You can find the CMU Sphinx team at http://cmusphinx.sourceforge.net/. If you have any questions, or to report any bugs, please email me; my current email can be found on my webpage at http://bayleshanks.com.
+
+  Tips
+   --
+
+* The gain set for the microphone makes a difference. Currently the ALSA mixer program 'alsamixer' says my microphone is set at level '21' which it says is '-16dB'.
+
+* Don't speak too slowly. This is counterintuitive because if another human were to have trouble understanding your speech, you would slow down. However, if you slow down too much, you pronounce the words slightly differently and the program has trouble with that.
+
+* Don't enunciate your words too much -- the program expects you to pronounce your words the way that they are pronounced in normal conversation.
+
+* If the program is having difficulty, pause slightly between words. One of the hardest things for the program is to determine where one word stops and the next word begins. But don't pause more than a quarter of a second.
+
+* If the program is having difficulty, you can trying saying the words one at a time -- waiting for each word to appear before saying the next one. However, because the program uses the context of surrounding words to help it to decide what you said, this sometimes gives worse performance than saying the words all at once. One problem is that as soon as it prints some words to the screen, if forget about those words that it printed; and then it can't use that as context for the following words.
+
+* Don't say a long sentence all at once. Rather, say a phrase of 5-15 words and then wait half a second before continuing. This should cause each phrase to be processed separately. Try to split the phrases at logical seeming boundaries -- this will allow the program to make maximal use of context when interpreting the words in each phrase.
+
+* The program has the most trouble with short words and the least trouble with long words. This may be surprising because for humans, long words are considered "difficult".
+
+* Here's what i am doing right now as i write this document: first, in "word mode", i say what i want to say at a moderate pace, pausing between phrases but not between words. After each sentence or couple of sentences, i go back to mistakes, delete them, and resay them carefully, this time pausing about 1/5th of a second between each word. Usually this second pass fixes many but not all of the mistakes. Finally, i switch to "keyboard mode", and manually correct the rest of the mistakes.
+
+* When i am not writing english text, for instance when i am programming, i stay in keyboard mode a lot of the time.
+
+* Which microphone should you buy? Here's my experience. I used to use a Koss M18, which is a $15, low-end mic that sits on your desk, and the (presumably low-end) soundcard that came in my laptop. I noticed a large increase in accuracy when i switched to a high end, noise canceling headset microphone, with a higher quality external USB sound card. However, i suspect that most of the change in accuracy comes from just using a headset rather than a microphone that sits on your desk. Furthermore, based on rumors that i read online, i suspect that switching to an external soundcard helps more than upgrading microphone quality (at least if your internal sound card is low quality). So my guess is this: although a decent quality headset is essential, paying a lot for a high quality headset is probably not worth it -- although i can't really say because i've only personally tried one headset. I currently use a Plantronics CS55 headset with a GN Netcom SeleCT switch (the CS55 connects to phone lines and the switch converts it to a computer microphone) and an Andrea half-duplex external soundcard -- combined, this cost me $280. But because of the considerations above, you probably want to get a cheaper setup then i have. When i asked the CMU Sphinx devs, who know much more than me, which microphone to get, they said "Any decent USB headset without noise from computer circuts will give you acceptable quality, the only requirement is that it must be comfortable for you." (http://sourceforge.net/forum/message.php?msg_id=4954649)
+
+
+* When using a headset microphone, don't position the microphone right in front of your mouth. Put it slightly above and to the side.
+
+* If you are silently reading a web page or email, or in general if you don't expect to type anything for little while, say "VOICE" in order to "turn off the mic" -- this way you don't have to worry about coughing or breathing too loudly or whatever while you read.
+
+* Since fakekey_uinput registers and unregisters a virtual keyboard device each time it is called, other parts of your system might get confused. In particular, on my system "hald" starts taking forever and i have to turn it off whenever i use Voice Keyboard. 
+
+* Consider renice'ing Voice Keyboard to -15 -- it speeds things up slightly.
+
+* Earlier i advised you to try to avoid saying words that the program does not know. Some types of words that the program does not know are:
+
+   * people's names 
+   * place names 
+   * country names 
+   * food words
+   * types of animals
+   * types of plants
+   * technical words 
+   * big, stuffy words (sometimes)
+   * old-fashioned/poetic sounding words (sometimes)
+
+   There are some exceptions for each of these. Please do not read anything into my choices of exceptions; i am not trying to make a political statement, i simply chose words that i personally say often, for my own convenience (for example, "san diego" is included because that's where i live). Someday i hope to improve the program so that each user can customize the list of exceptions -- but until then you are all stuck using a list that i made for myself (actually, hardcore developers can already customize the vocab -- but it's a pain. See doc/how_to_build_a_lm.txt).
+
+   The motivation for leaving out words is that accuracy is significantly improved.
+
+* In Firefox, you can use cntl-T (CONTROL TANGO) to get a new tab, cntl-W (CONTROL WHISKEY) to delete the current tab, cntl-shift-T to undelete the last tab, cntl-pageUp to switch to the previous tab, cntl-pageDown to switch to the next tab, cntl-L (CONTROL LIMA) to select the URL bar, cntl-K (CONTROL KILO) to select the search bar, and ' (APOSTROPHE) to initiate a search of the page text and to move the cursor to the query box.
+
+For more information, please see the doc/ subdirectory.

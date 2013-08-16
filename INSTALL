@@ -1,0 +1,139 @@
+This document tells you how to install Voice Keyboard. It was written in 2009. Parts of it have been updated in 2013 when the author got it working with Ubuntu.
+
+Voice Keyboard is currently only compatible with GNU/Linux.
+
+Voice Keyboard is not yet provided in .deb or .rpm packaged formats. You'll have to know your way around the command line in order to follow the instructions below.
+
+Note that, due to the large size of the language model files, they are not in the git source tree for this project. You'll have to download a release tarball.
+
+Voice Keyboard requires some other program in order to send keyboard events to your system. There are two choices; "fakekey_uinput", which is included, or "xdotool", which is available separately. fakekey_uinput sends keyboard events via the "uinput" kernel module, and "xdotool" sends them via X Windows. The advantage of fakekey_uinput is that you can use it even outside of X Windows. However, fakekey_uinput makes hald (a daemon which many people use) go crazy, and it doesn't even work with recent kernel versions. Therefore, "xdotool" is the recommended option. 
+
+DEPENDENCIES 
+
+Please install these things first.
+
+* Either "xdotool", or the "uinput" kernel module (if you use fakekey_uinput, then this module must be loaded in the kernel whenever Voice Keyboard is run -- this is what allows Voice Keyboard to act as a virtual keyboard device)
+
+* Python 2.4 or 2.5
+
+* sphinx_wsj_all_cont_3no_4000_32 (acoustic model): http://www.inference.phy.cam.ac.uk/kv227/sphinx/sphinx_wsj_all_cont_3no_4000_32.zip
+   ("installing" this guy just consists of unpacking it into a permanent location)
+
+* lm3g2dmp (DMP file generator): http://cmusphinx.sourceforge.net/html/download.php#lm3g2dmp
+
+
+Optional:
+
+You'll need SphinxBase and Sphinx3 if you want to build sphinx3_livesegment from source -- however, the voice-keyboard tarball comes with a statically linked executable built on i686, so maybe that'll do for you. 
+
+* SphinxBase (common libraries): use the version inside the "sphinx-deps" tarball available from the voice-keyboard sourceforge download page.
+
+* Sphinx3 (speech recognizer core): use the version inside the "sphinx-deps" tarball available from the voice-keyboard sourceforge download page.
+
+
+
+
+
+
+   -- IF YOU WANT TO TRAIN THE SYSTEM TO YOUR OWN VOICE --
+
+Then at some point you'll have to install this also (you can start using Voice Keyboard without installing this, if you do, just come back and install it later before training):
+
+* SphinxTrain: http://cmusphinx.sourceforge.net/html/download.php/#SphinxTrain
+
+
+
+
+
+INSTALLATION 
+
+* Change into the directory into which you unpacked Voice Keyboard 
+
+* Open the file named voice-keyboard.py with any text editor and look for the following stanza:
+
+---
+
+VOICE_KEYBOARD_RES_PATH = '/home/bshanks/prog/speech/voice-keyboard'
+ACOUSTIC_MODEL_PATH = '/home/bshanks/prog/speech/wsj_all_cont_3no_4000_32'
+MICROPHONE_DEVICE_PATH = '/dev/dsp1'
+MLLR_ARGS = ''
+VOICE_KEYBOARD_LOG_PATH = ''
+XDOTOOL_PATH = '/usr/bin/xdotool'
+WMCTRL_PATH = '/usr/bin/wmctrl'
+---
+
+Change these paths to reflect your installation. VOICE_KEYBOARD_RES_PATH should be that directory into which you unpacked Voice Keyboard. ACOUSTIC_MODEL_PATH should be the path into which you unpacked sphinx_wsj_all_cont_3no_4000_32. MICROPHONE_DEVICE_PATH use self-explanatory and may often be one of /dev/dsp, /dev/dsp0, or /dev/dsp1. If you are Ubuntu you can use the command 'arecord -L' to list the PCM names of ALSA devices and choose one of those;  e.g. on my machine i put "MICROPHONE_DEVICE_PATH = 'hw:CARD=AK5370,DEV=0'". MLLR_ARGS can be left blank for now (it is used for speaker adaptation, that is, for training the software to your particular voice). VOICE_KEYBOARD_LOG_PATH is the location where a transcript of all of your Voice Keyboard sessions will be stored -- if you don't want such a transcript to be kept, leave this blank (currently this log isn't very reliable anyway).
+
+
+If you are on Ubuntu you might have to execute the following commands to make Ubuntu allow voice-keyboard to put its status icon in the system tray:
+
+  gsettings get com.canonical.Unity.Panel systray-whitelist
+  # now copy the result, and add the following items to the end of the list:
+  #    'voice-keyboard.py', 'voice-keyboard', 'python', and then do
+  # "gsettings set com.canonical.Unity.Panel systray-whitelist <YOUR LIST>"
+  # for example, on my machine i did:
+  #   gsettings set com.canonical.Unity.Panel systray-whitelist "['JavaEmbeddedFrame', 'Wine', 'Update-notifier', 'voice-keyboard.py', 'voice-keyboard', 'python']"
+
+
+
+* To run the program, enter 
+
+python voice-keyboard.py
+
+
+* (optional) In order to save disk space, this command will delete some files that you no longer need. Note that after you do this, you will have to redownload Voice Keyboard if you ever want to change the vocabulary or "language model" -- therefore it is recommended that developers not do the following step:
+
+make savespace
+
+
+To build sphinx3_livesegment from source (this is unnecessary if the included sphinx3_livesegment works for you):
+
+
+* Open the file named Makefile with any text editor and look at the first two lines:
+
+---
+SPHINXBASE_PATH=/home/bshanks/prog/speech/sphinxbase
+SPHINX3_PATH=/home/bshanks/prog/speech/sphinx3
+---
+
+Change these paths to reflect your installation. 
+
+
+
+* Execute "make sphinx3_livesegment"
+
+* This should've built "sphinx3_livesegment". As root, move it to some system bin directory, for example, /usr/local/bin. Alternately, just put it anywhere in your $PATH. 
+
+
+
+
+TO USE FAKEKEY_UINPUT INSTEAD OF XDOTOOL
+
+* Execute "make"
+
+* This should've built an executable binary called "fakekey_uinput". As root, move it to some system bin directory, for example, /usr/local/bin. Alternately, just put it anywhere in your $PATH. 
+
+* Edit voice-keyboard.py and change the line
+    FAKEKEY_UINPUT_PATH = '/home/bshanks/prog/speech/voice-keyboard/fakekey_uinput'
+  to reflect your path
+
+* Edit voice-keyboard.py and change the line
+    VIRTUAL_KEYBOARD_PROGRAM = 'XDOTOOL'  # alternately, 'XDOTOOL'
+  to
+    VIRTUAL_KEYBOARD_PROGRAM = 'FAKEKEY_UINPUT'  # alternately, 'XDOTOOL'
+
+
+
+FOR DEVELOPERS ONLY 
+
+Developers might want to install this stuff in addition:
+
+  Language model and dictionary generation:
+
+* cmuclmtk (language model toolkit): http://cmusphinx.sourceforge.net/html/download.php#cmuclmtk
+* cmudict (dictionary): http://www.speech.cs.cmu.edu/cgi-bin/cmudict
+* lm_giga_20k_vp_3gram (wsj language model): http://www.inference.phy.cam.ac.uk/kv227/lm_giga/lm_giga_20k_vp_3gram.zip
+
+
+(note on sphinx versions: currently, the software only works with an outdated nightly build of sphinxbase and sphinx3, roughly equivalent to sphinxbase-0.4 and something greater than sphinx3-0.7. the sphinx3-0.7 release is too old, and the sphinxbase-0.4 release seems to have a bug. the current nightlies are too new. therefore, the file release section of sourceforge contains a tarball of version of the sphinxbase and sphinx3 distribution that work with voice-keyboard. hopefully, sometime in the future an updated sphinx3 will be released, at which time i'll update voice-keyboard so that it is compatible with releases. after that, you'll be able to download sphinxbase and sphinx3 from http://cmusphinx.sourceforge.net/html/download.php#sphinx3 and http://cmusphinx.sourceforge.net/html/download.php#sphinxbase)
+
